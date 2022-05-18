@@ -17,7 +17,8 @@
 
 // "Nanananananananananana Batman!" --> "##########################man!"
 function maskify(string) {
-  //you code here...
+  const stringfy = string.toString()
+  return stringfy.length > 4 ? '#'.repeat(stringfy.length - 4) + stringfy.slice(-4) : stringfy
 }
 
 module.exports = maskify;
