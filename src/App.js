@@ -1,5 +1,9 @@
+import Slider from './Exercises/Exercise6'
+
 function App() {
-  return <div>Mobiauto Teste front-end</div>;
+  return <>
+    <Slider />
+  </>
 }
 
 export default App;
