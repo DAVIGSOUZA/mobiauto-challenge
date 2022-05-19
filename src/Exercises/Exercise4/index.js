@@ -21,7 +21,18 @@
 //   ]
 
 function fizzBuzz(number) {
-  //you code here...
+  let result = []
+  for (let iterator = 1; iterator <= number; iterator++) {
+    if (iterator%3 === 0 && iterator%5 === 0) {
+      result.push('FizzBuzz')
+    } else if (iterator%5 === 0) {
+      result.push('Buzz')
+    } else if (iterator%3 === 0) {
+      result.push("Fizz")
+    }
+    result.push(iterator)
+  }
+  return result
 }
 
 module.exports = fizzBuzz;
