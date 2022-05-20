@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import 'h8k-components'
 
 import { image1, image2, image3, image4 } from './assets/images'
@@ -6,10 +6,7 @@ import { Thumbs, Viewer } from './components'
 
 const title = 'Catalog Viewer'
 
-
-
-
-function App() {
+function Slider() {
   const catalogsList = [
     {
       thumb: image1,
@@ -34,6 +31,32 @@ function App() {
   const [slideTimer, setSlideTimer] = useState(false)
   const [slideDuration] = useState(3000)
 
+  const increaseIndex = () => {
+    return activeIndex < catalogs.length - 1
+      ? setActiveIndex(prevActiveIndex => prevActiveIndex + 1)
+      : setActiveIndex(0)
+  }
+
+  const decreaseIndex = () => {
+    return activeIndex === 0 
+      ? setActiveIndex(catalogs.length - 1)
+      : setActiveIndex(prevActiveIndex => prevActiveIndex - 1)
+  }
+
+  const handleArrowKeys = (e) => {
+    if (e.key === 'ArrowRight') increaseIndex()
+    if (e.key === 'ArrowLeft') decreaseIndex()
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleArrowKeys)
+    return () => window.removeEventListener('keydown', handleArrowKeys)
+  })
+
+  useEffect(() => {
+    const autoSlide = slideTimer && setInterval(() => increaseIndex(), slideDuration)
+    return () => clearInterval(autoSlide)
+  }, [slideTimer, activeIndex])
 
   return (
     <Fragment>
@@ -46,16 +69,19 @@ function App() {
               <button
                 className="icon-only outlined"
                 data-testid="prev-slide-btn"
+                onClick={() => decreaseIndex()}
               >
                 <i className="material-icons">arrow_back</i>
               </button>
               <Thumbs
                 items={catalogs}
                 currentIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
               />
               <button
                 className="icon-only outlined"
                 data-testid="next-slide-btn"
+                onClick={() => increaseIndex()}
               >
                 <i className="material-icons">arrow_forward</i>
               </button>
@@ -66,6 +92,8 @@ function App() {
           <input
             type='checkbox'
             data-testid='toggle-slide-show-button'
+            value={slideTimer}
+            onClick={() => setSlideTimer(!slideTimer)}
           />
           <label className='ml-6'>Start Slide Show</label>
         </div>
@@ -74,5 +102,5 @@ function App() {
   )
 }
 
-export default App
+export default Slider
 
